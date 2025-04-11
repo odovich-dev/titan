@@ -25,16 +25,16 @@ fi
 # Чтение ключей из файла
 mapfile -t identity_keys < "$KEYS_FILE"
 
-# Проверка количества ключей
-if [ "${#identity_keys[@]}" -lt 5 ]; then
-    echo -e "${YELLOW}Not enough identity keys in $KEYS_FILE. Please add at least 5.${NC}"
+# Проверка наличия хотя бы одного ключа
+if [ "${#identity_keys[@]}" -lt 1 ]; then
+    echo -e "${YELLOW}No identity keys found in $KEYS_FILE. Please add at least one.${NC}"
     exit 1
 fi
 
 # Настройки
 storage_gb=50
 start_port=1235
-container_count=5
+container_count="${#identity_keys[@]}"
 
 # Отключение IPv6 временно
 sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
